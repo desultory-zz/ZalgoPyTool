@@ -21,38 +21,38 @@ def hex_to_unicode(hex_list):
 	return [chr(hex) for hex in hex_list]
 
 def build_above_pool():
-	a = [
+	above_pool = [
 		0x031A, 0x031B, 0x0346, 0x0357, 0x0358, 0x035B, 0x035D, 0x035E, 0x0360, 0x0361,
 		*range(0x0300, 0x0316), *range(0x033D, 0x0345), *range(0x034A, 0x034D),
 		*range(0x0350, 0x0353), *range(0x0363, 0x0370)
 	]
-	a = hex_to_unicode(a)
-	return a
+	above_pool = hex_to_unicode(above_pool)
+	return above_pool
 
 def build_below_pool():
-	b = [
+	below_pool = [
 		0x0345, 0x034D, 0x034E, 0x0359, 0x035A, 0x035C, 0x035F, 0x0362,
 		*range(0x0316, 0x031A), *range(0x031C, 0x0334), *range(0x0339, 0x033D),
 		*range(0x0347, 0x034A), *range(0x0353, 0x0357)
 	]
-	b = hex_to_unicode(b)
-	return b
+	below_pool = hex_to_unicode(below_pool)
+	return below_pool
 
 def build_through_pool():
-	t = list(range(0x0334, 0x0339))
-	t = hex_to_unicode(t)
-	return t
+	through_pool = list(range(0x0334, 0x0339))
+	through_pool = hex_to_unicode(through_pool)
+	return through_pool
 
 def build_normal_ascii():
-	n = list(range(0x020, 0x07F))
-	n = hex_to_unicode(n)
-	return n
+	normal_ascii = list(range(0x020, 0x07F))
+	normal_ascii = hex_to_unicode(normal_ascii)
+	return normal_ascii
 
 def get_zalgo(pool, count):
-	out = []
+	zalgo_string = []
 	for i in range(count):
-		out.append(random.choice(pool))
-	return out
+		zalgo_string.append(random.choice(pool))
+	return zalgo_string
 
 def ruin(string, up, inside, down):
 	split = list(string)
