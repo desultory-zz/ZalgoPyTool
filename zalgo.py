@@ -16,10 +16,8 @@ parser.add_argument('--through', '-t', type=int, help="Number through", default=
 parser.add_argument('--down', '-d', type=int, help="Distance down", default=defDown)
 parser.add_argument('--to-ascii', action='store_true', help="Converts input to normal ASCII", default=False)
 
-def hexToUnicode(var):
-	for n in range(len(var)):
-		var[n] = chr(var[n])
-	return(var)
+def hexToUnicode(hex_list):
+	return [chr(hex) for hex in hex_list]
 
 def buildAbovePool():
 	a = [
@@ -28,7 +26,7 @@ def buildAbovePool():
 		*range(0x0350, 0x0353), *range(0x0363, 0x0370)
 	]
 	a = hexToUnicode(a)
-	return(a)
+	return a
 
 def buildBelowPool():
 	b = [
@@ -37,23 +35,23 @@ def buildBelowPool():
 		*range(0x0347, 0x034A), *range(0x0353, 0x0357)
 	]
 	b = hexToUnicode(b)
-	return(b)
+	return b
 
 def buildThroughPool():
 	t = list(range(0x0334, 0x0339))
 	t = hexToUnicode(t)
-	return(t)
+	return t
 
 def buildNormalAscii():
 	n = list(range(0x020, 0x07F))
 	n = hexToUnicode(n)
-	return(n)
+	return n
 
 def getZalgo(pool, count):
 	out = []
 	for i in range(count):
 		out.append(random.choice(pool))
-	return(out)
+	return out
 
 def ruin(string, up, inside, down):
 	split = list(string)
@@ -67,7 +65,7 @@ def ruin(string, up, inside, down):
 		temp += ''.join(getZalgo(below, down))
 		split[n] = temp
 	joined = ''.join(split)
-	return(joined)
+	return joined
 
 def clean(string):
 	normalAscii = buildNormalAscii()
@@ -75,7 +73,7 @@ def clean(string):
 	for c in string:
 		if c in normalAscii:
 			temp += c
-	return(temp)
+	return temp
 
 if __name__ == "__main__":
 	args = parser.parse_args()
