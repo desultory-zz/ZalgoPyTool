@@ -17,36 +17,22 @@ parser.add_argument('--through', '-t', type=int, help="Number through", default=
 parser.add_argument('--down', '-d', type=int, help="Distance down", default=DEFAULT_DOWN)
 parser.add_argument('--to-ascii', action='store_true', help="Converts input to normal ASCII", default=False)
 
-def hex_to_unicode(hex_list):
-	return [chr(hex) for hex in hex_list]
-
-def build_above_pool():
-	above_pool = [
-		0x031A, 0x031B, 0x0346, 0x0357, 0x0358, 0x035B, 0x035D, 0x035E, 0x0360, 0x0361,
-		*range(0x0300, 0x0316), *range(0x033D, 0x0345), *range(0x034A, 0x034D),
-		*range(0x0350, 0x0353), *range(0x0363, 0x0370)
-	]
-	above_pool = hex_to_unicode(above_pool)
-	return above_pool
-
-def build_below_pool():
-	below_pool = [
-		0x0345, 0x034D, 0x034E, 0x0359, 0x035A, 0x035C, 0x035F, 0x0362,
-		*range(0x0316, 0x031A), *range(0x031C, 0x0334), *range(0x0339, 0x033D),
-		*range(0x0347, 0x034A), *range(0x0353, 0x0357)
-	]
-	below_pool = hex_to_unicode(below_pool)
-	return below_pool
-
-def build_through_pool():
-	through_pool = list(range(0x0334, 0x0339))
-	through_pool = hex_to_unicode(through_pool)
-	return through_pool
-
-def build_normal_ascii():
-	normal_ascii = list(range(0x020, 0x07F))
-	normal_ascii = hex_to_unicode(normal_ascii)
-	return normal_ascii
+ABOVE_POOL = [chr(dec) for dec in [
+			768, 769, 770, 771, 772, 773, 774, 775, 776, 777,
+			778, 779, 780, 781, 782, 783, 784, 785, 786, 787,
+			788, 789, 794, 795, 829, 830, 831, 832, 833, 834,
+			835, 836, 838, 842, 843, 844, 848, 849, 850, 855,
+			856, 859, 861, 862, 864, 865, 867, 868, 869, 870,
+			871, 872, 873, 874, 875, 876, 877, 878, 879
+			]]
+THROUGH_POOL = [chr(dec) for dec in [820, 821, 822, 823, 824]]
+BELOW_POOL = [chr(dec) for dec in [
+			790, 791, 792, 793, 796, 797, 798, 799, 800, 801,
+			802, 803, 804, 805, 806, 807, 808, 809, 810, 811,
+			812, 813, 814, 815, 816, 817, 818, 819, 825, 826,
+			827, 828, 837, 839, 840, 841, 845, 846, 851, 852,
+			853, 854, 857, 858, 860, 863, 866
+			]]
 
 def get_zalgo(pool, count):
 	zalgo_string = []
@@ -56,23 +42,19 @@ def get_zalgo(pool, count):
 
 def ruin(string, up, inside, down):
 	split = list(string)
-	above = build_above_pool()
-	through = build_through_pool()
-	below = build_below_pool()
 	for n in range(len(split)):
 		temp = split[n]
-		temp += ''.join(get_zalgo(above, up))
-		temp += ''.join(get_zalgo(through, inside))
-		temp += ''.join(get_zalgo(below, down))
+		temp += ''.join(get_zalgo(ABOVE_POOL, up))
+		temp += ''.join(get_zalgo(THROUGH_POOL, inside))
+		temp += ''.join(get_zalgo(BELOW_POOL, down))
 		split[n] = temp
 	joined = ''.join(split)
 	return joined
 
 def clean(string):
-	normal_ascii = build_normal_ascii()
 	temp = ''
 	for c in string:
-		if c in normal_ascii:
+		if 32 <= ord(c) <= 126:
 			temp += c
 	return temp
 
